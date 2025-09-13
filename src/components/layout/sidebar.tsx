@@ -63,8 +63,8 @@ export function Sidebar({ onClose }: SidebarProps) {
             <FileText className="w-5 h-5 text-primary-foreground" />
           </div>
           <div className="flex flex-col">
-            <span className="text-lg font-bold text-foreground">VReportes</span>
-            <span className="text-xs text-muted-foreground">Sistema Varcus</span>
+            <span className="text-lg font-semibold tracking-tight text-foreground">VReportes</span>
+            <span className="text-xs text-muted-foreground font-medium">Sistema Varcus</span>
           </div>
         </div>
         {onClose && (
@@ -79,7 +79,7 @@ export function Sidebar({ onClose }: SidebarProps) {
         {menuGroups.map((group, groupIndex) => (
           <div key={group.title} className="space-y-2">
             <div className="px-3 py-2">
-              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                 {group.title}
               </h3>
             </div>

@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { cn } from '@/lib/utils'
 import { 
   DollarSign, 
   FileText, 
@@ -94,8 +95,8 @@ export default function Dashboard() {
       {/* Header */}
       <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
         <div className="space-y-1">
-          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-3xl font-semibold tracking-tight">Dashboard</h1>
+          <p className="text-muted-foreground text-sm">
             Resumen completo de tu negocio y métricas clave
           </p>
         </div>
@@ -124,19 +125,22 @@ export default function Dashboard() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stat.value}</div>
-              <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+              <div className="text-2xl font-semibold tracking-tight">{stat.value}</div>
+              <div className="flex items-center space-x-2 text-xs text-muted-foreground mt-1">
                 {stat.changeType === 'positive' ? (
                   <ArrowUpRight className="h-3 w-3 text-green-600" />
                 ) : (
                   <ArrowDownRight className="h-3 w-3 text-red-600" />
                 )}
-                <span className={stat.changeType === 'positive' ? 'text-green-600' : 'text-red-600'}>
+                <span className={cn(
+                  "font-medium",
+                  stat.changeType === 'positive' ? 'text-green-600' : 'text-red-600'
+                )}>
                   {stat.change}
                 </span>
                 <span>desde el mes pasado</span>
               </div>
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-xs text-muted-foreground mt-2">
                 {stat.description}
               </p>
             </CardContent>
