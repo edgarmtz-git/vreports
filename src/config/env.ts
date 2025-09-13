@@ -20,7 +20,7 @@ export const JWT_CONFIG = {
 
 // 👤 Credenciales de prueba (opcional)
 export const TEST_CREDENTIALS = {
-  USER: import.meta.env.VITE_TEST_USER || 'soporte.tecnico@varcus.co.mx',
+  USER: import.meta.env.VITE_TEST_USER || 'soporte.tecnico@varcus.com.mx',
   PASSWORD: import.meta.env.VITE_TEST_PASSWORD || 'z14K7uN1',
 }
 
