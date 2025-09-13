@@ -2,36 +2,48 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { useToast } from '@/hooks/use-toast'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { useAuth } from '@/contexts/AuthContext'
+import { TEST_CREDENTIALS } from '@/config/env'
 
 export default function SignIn() {
-  const [isLoading, setIsLoading] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const { login, isLoading, error } = useAuth()
   const { toast } = useToast()
   const navigate = useNavigate()
+  const location = useLocation()
+
+  const from = location.state?.from?.pathname || '/dashboard'
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setIsLoading(true)
 
     try {
-      // Simular autenticación
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      console.log('Iniciando login con:', { email, password })
+      await login({ email, password })
+      
+      console.log('Login exitoso, navegando a:', from)
       
       toast({
         title: "Inicio de sesión exitoso",
-        description: "Bienvenido al sistema de reportes",
+        description: "Bienvenido al sistema de reportes Varcus",
       })
       
-      navigate('/dashboard')
+      navigate(from, { replace: true })
     } catch (error) {
+      console.error('Error en login:', error)
       toast({
         title: "Error de autenticación",
-        description: "Credenciales incorrectas",
+        description: error instanceof Error ? error.message : "Credenciales incorrectas",
         variant: "destructive",
       })
-    } finally {
-      setIsLoading(false)
     }
+  }
+
+  const handleTestLogin = () => {
+    setEmail(TEST_CREDENTIALS.USER)
+    setPassword(TEST_CREDENTIALS.PASSWORD)
   }
 
   return (
@@ -45,6 +57,12 @@ export default function SignIn() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
+            {error && (
+              <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
+                {error}
+              </div>
+            )}
+            
             <div className="space-y-2">
               <label htmlFor="email" className="text-sm font-medium">
                 Correo electrónico
@@ -52,6 +70,8 @@ export default function SignIn() {
               <input
                 id="email"
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="usuario@varcus.com.mx"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
@@ -64,18 +84,33 @@ export default function SignIn() {
               <input
                 id="password"
                 type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
             </div>
-            <Button 
-              type="submit" 
-              className="w-full" 
-              disabled={isLoading}
-            >
-              {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
-            </Button>
+            
+            <div className="space-y-2">
+              <Button 
+                type="submit" 
+                className="w-full" 
+                disabled={isLoading}
+              >
+                {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
+              </Button>
+              
+              <Button 
+                type="button" 
+                variant="outline" 
+                className="w-full" 
+                onClick={handleTestLogin}
+                disabled={isLoading}
+              >
+                Usar credenciales de prueba
+              </Button>
+            </div>
           </form>
         </CardContent>
       </Card>
